@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="missingBeeApp">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Web App for bees</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+    <script src="http://code.angularjs.org/1.2.0-rc.3/angular.min.js"></script>
+    
+    <!--Warning: This should be another sepparate file-->
+    <script type="text/javascript">
+			
+
+        //TODO: I think that by using Webview adnroid component I could invoke and load the my defaultandroid page html...
+        //though im not entirely sure how to create the intend and further activities.
+        //I would better go surf google or ask for help! :)
+
+        //on creating the view?
+        //public void onCreate(Bundle savedInstanceState) {
+        //    super.onCreate(savedInstanceState);
+        //    setContentView(R.layout.main);
+        // 
+        //    WebView webView = (WebView)findViewById(R.id.webView);
+        //    webView.getSettings().setJavaScriptEnabled(true);
+        //    webView.setWebChromeClient(new WebChromeClient());
+        //    webView.loadUrl("file:///defaultandroid.htm");   
+        //}
+
+        //register the app into angularJS
+        var helpingBeesApp = angular.module('missingBeeApp', []);
+
+        //here i coded the viewmodel ( or controller's angular approach ).
+        helpingBeesApp.controller('missingBeeCtrl', function missingBeeCtrl($scope, $http) {
+
+            //default needyBee object
+            $scope.needyBee = { 'name': '', 'isFlying': null, 'savedTime': null };
+
+
+            //add needy bee
+            $scope.addNeedyBee = function () {
+                $scope.activePanel = 2;
+		$scope.needyBee.savedTime = new Date();
+                $scope.bees.push($scope.needyBee);
+
+                //TODO: this code needs some kind of refactor...  google it!
+                $scope.needyBee = { 'name': '', 'isFlying': null, 'savedTime': null };
+            };
+
+//            $scope.update = function (user) {
+//                $scope.master = angular.copy(user);
+//            };
+
+            //remove needy bee and add it into the save list
+            $scope.removeBee = function (beeSaved) {
+
+                //$scope.user = angular.copy($scope.master);??
+		$scope.activePanel = 3;                
+                $scope.savedBees.push(beeSaved);
+
+                for (var i = 0; i < $scope.bees.length; i++) {
+                    if (beeSaved === $scope.bees[i]) {
+                        $scope.bees.splice(i, 1);
+                    }
+                }
+            }
+
+            $scope.savedBees = [];
+
+            //TODO: 
+            //it should work when running in webServer instead.
+            //    $http.get('file://bees.json').success(function (data) {
+            //        $scope.bees = data;
+            //    });
+
+            $scope.bees = [
+                {
+                    'name': 'Nexus',
+                    'isFlying': false,
+                    'savedTime': new Date()
+                }, {
+                    'name': 'Coquis',
+                    'isFlying': true,
+                    'savedTime': new Date()
+                }];
+        });
+    </script>
+</head>
+
+<body>
+    <div data-role="page" id="page" ng-controller="missingBeeCtrl">
+
+
+        <!--header-->
+        <div data-role="header">
+            <h1>
+                spa for needies bees</h1>
+            <a href="google.com" data-icon="check">Save them all! </a>
+        </div>
+        <!--header ends-->
+
+        <!--collapsible body-->
+        <div data-role="collapsible-set" data-theme="b" data-content-theme="c" >
+            
+            <form name="form" id="form"> 
+    
+
+            <!--collapsible item-->
+            <div data-role="collapsible" data-theme="b" data-content-theme="c" data-collapsed="false" data-iconpos="right">
+                <h3>
+                    adding bees upon request
+                </h3>
+                
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    
+                    <legend>every bee should have a name!</legend>
+                    
+                    <input required type="text" name="needyBee" ng-model="needyBee.name" 
+                        id="needyBee" value="" placeholder="please provide a name for the needy bee." />
+                    
+                </div>
+                
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    
+                    <legend>is she either alive or has just passed out?</legend>
+
+                    <input type="checkbox"  ng-model="needyBee.isFlying" name="checkbox-alive" 
+                        id="checkbox-alive" class="custom" />
+
+                    <label for="checkbox-alive">flying?</label>
+                </div>
+
+<!--                <div data-role="fieldcontain">
+	                <label for="flip-3">either alive or out?</label>
+	                <select name="flip-3" ng-model="needyBee.isFlying" id="flip-3" data-role="slider" data-theme="a">
+		                <option value="true">flying</option>
+		                <option value="false">sleepy</option>
+	                </select> 
+                </div>
+                -->
+                <div data-role="fieldcontain" class="ui-hide-label" >
+                    <fieldset class="ui-grid-a">
+                        <div class="ui-block-a">
+                            
+                        <!--    <a href="" data-theme="a" data-role="button" data-icon="add" ng-disabled="form.$invalid" ng-click="addNeedyBee()">another needy bee</a>
+                        -->
+
+                        <button  ng-disabled="form.$invalid" ng-click="addNeedyBee()">SAVE</button>
+                        </div>
+                 
+                        
+
+                    </fieldset>
+                </div>
+            </div>
+            
+            </form>
+
+           <!--collapsible item ends--> 
+            
+            <!--collapsible item-->
+            <div data-role="collapsible" data-theme="b" data-content-theme="c" data-iconpos="right">
+                <h3>
+                    searching bees
+                </h3>
+                <label for="search-bees">Search Input:</label>
+                
+                <input type="search" ng-model="queryBees" name="search-bees" id="search-bees" value="" />
+                
+                <!-- here to save grid begins -->
+
+                <ul ng-repeat="bee in bees | filter: queryBees" data-role="listview" data-inset="true" data-theme="d">
+                	<li>
+				        <h3>{{bee.name}}</h3>
+				        <p><strong>You've asked to save {{bee.name}}...</strong></p>
+
+                        <p>r'u sure? it's {{bee.isFlying ? ' flying!! :)' : ' away :( '}}</p>
+				        <p>                                   
+                            <a href="#" data-role="button" data-theme="c" data-icon="delete" 
+                                    ng-click="removeBee(bee)">save it {{!bee.isFlying ? ' anyway' : ''}}!!!!
+                            </a>
+                        </p>
+				        <p class="ui-li-aside">{{bee.savedTime | date:dateTimeFormat }}</p>
+
+			        </li>
+                    </ul>
+
+                <!-- here to save grid ends -->
+
+            </div>
+            <!--collapsible item ends-->
+
+            <!--collapsible item-->
+            <div data-role="collapsible" data-theme="b" data-content-theme="b" data-iconpos="right">
+                <h3>
+                    saved ones!
+                </h3>
+
+                <!-- here saved ones grid begins -->
+
+                <ul ng-repeat="bee in savedBees" data-role="listview" data-inset="true" data-theme="d">
+                    
+                    <li><a target="_blank" href="http://google.com/search?q={{bee.name}}">
+                    <img src="http://fnpnie.com/userfiles/File/SingleBee.jpg" style="width:30px; height:30px"/>
+                    surf {{bee.name}} in google!</a></li>
+                </ul>
+
+                <!-- here saved ones grid ends -->
+
+            </div>
+            <!--collapsible item ends-->
+        </div>
+        <!--collapsible body ends-->
+
+
+        <!--footer-->
+        <div data-role="footer">
+            <h4>
+                {{bees.length}} bees to save and {{savedBees.length}} saved!</h4>
+        </div>
+    </div>
