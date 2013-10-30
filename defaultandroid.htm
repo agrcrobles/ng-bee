@@ -39,7 +39,6 @@
 
             //add needy bee
             $scope.addNeedyBee = function () {
-                $scope.activePanel = 2;
 		$scope.needyBee.savedTime = new Date();
                 $scope.bees.push($scope.needyBee);
 
@@ -55,7 +54,6 @@
             $scope.removeBee = function (beeSaved) {
 
                 //$scope.user = angular.copy($scope.master);??
-		$scope.activePanel = 3;                
                 $scope.savedBees.push(beeSaved);
 
                 for (var i = 0; i < $scope.bees.length; i++) {
