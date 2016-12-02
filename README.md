@@ -21,6 +21,6 @@ Me quedaron pendientes por investigar cosas como jquery mobile angular adapter y
 
 Lo de los tipos callbacks async? GENIAL... aca lo llaman promises y deferred.
 
-MVVM over MVC... sigue demostrando ser el ui pattern por excelencia.
+MVVM over MVC... seguia demostrando ser el ui pattern por excelencia en 2013, hasta la llegada de flux por facebook en 2015.
 
 Foro? mmm... na.
